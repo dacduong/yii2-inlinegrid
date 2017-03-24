@@ -5,7 +5,6 @@
     "keywords": ["yii2","extension","inline gridview","Excel like","widget"],
     "license": "BSD-3-Clause",
     "homepage": "https://github.com/dacduong/yii2-inlinegrid",
-    "type": "yii2-extension",
     "authors": [
         {
             "name": "Dennis Nguyen",
