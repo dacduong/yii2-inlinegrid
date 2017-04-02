@@ -2,13 +2,14 @@
 
 namespace dacduong\inlinegrid;
 
-use kartik\grid\DataColumn;
 use yii\helpers\Html;
 
 class HiddenInputColumn extends DataColumn
 {
     
-    public $name = 'ithiddeninput';
+    public $name = 'ddhiddeninput';
+    
+    public $cssClass = 'dd-hidden';
     
     public $controlOptions = [];
     

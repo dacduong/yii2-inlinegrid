@@ -2,8 +2,6 @@
 
 namespace dacduong\inlinegrid;
 
-use kartik\grid\ColumnTrait;
-use kartik\grid\DataColumn;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 
@@ -16,11 +14,11 @@ class TextInputColumn extends DataColumn
     
     protected $help_block_str;
 
-    public $name = 'ittextinput';
+    public $name = 'ddtextinput';
     
     public $defaultValue = '';
 
-    public $cssClass = 'it-row-textinput';
+    public $cssClass = 'dd-row-textinput';
     
     public $rowHighlight = true;
     
@@ -48,9 +46,11 @@ class TextInputColumn extends DataColumn
             $this->controlOptions['class'] .= ' value-'.$this->attribute;
         }
         //mark table footer pageSummaryFunc
-        $this->pageSummaryOptions['data-func'] = $this->pageSummaryFunc;
-        $this->pageSummaryOptions['data-field'] = 'summary-'.$this->attribute;
-        $this->pageSummaryOptions['data-format'] = $this->format;
+        if ($this->pageSummary) {
+            $this->pageSummaryOptions['data-func'] = $this->pageSummaryFunc;
+            $this->pageSummaryOptions['data-field'] = 'summary-'.$this->attribute;
+            $this->pageSummaryOptions['data-format'] = $this->format;
+        }
     }
 
     /**

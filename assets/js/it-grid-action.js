@@ -1,9 +1,15 @@
 function saveRow(btn, pk, actionUrl, alwaysEdit) {
     var $row = $(btn).closest('tr');    
     var data = $row.find("input, textarea, select").serialize();
+    var url = window.location.href;
+    var paramPos = url.indexOf('?');
+    var params = '';
+    if (paramPos > 0) {
+        params = url.substr(paramPos);
+    }
     console.log(data);
     $.ajax({
-        url: actionUrl,
+        url: actionUrl + params,
         type: 'post',
         data: data,
         success: function (response) {
@@ -11,9 +17,9 @@ function saveRow(btn, pk, actionUrl, alwaysEdit) {
             //clear previous error message
             $row.find('.help-block').html('');
             var errors = response.errors;
-            if (errors.length == 0) {//no error
-                $row.removeClass(itChangeCss);
+            if (errors.length == 0) {//no error                
                 updateRowData($row, pk, response.result);
+                $row.removeClass(itChangeCss);
                 if (!alwaysEdit) {
                     disableInputs($row);
                     toggleButtons($row);
@@ -26,7 +32,11 @@ function saveRow(btn, pk, actionUrl, alwaysEdit) {
                         firstColumn = keys[i];
                     }
                     var column = keys[i] == '*' ? firstColumn : keys[i];
-                    $row.find('.error-' + column).append(errors[keys[i]][0]).append('<br/>');
+                    if ($row.find('.error-' + column).length == 0) {//error in column not in grid
+                        alert(errors[keys[i]][0]);
+                    } else {
+                        $row.find('.error-' + column).append(errors[keys[i]][0]).append('<br/>');
+                    }
                 }
             }
         },
@@ -107,19 +117,23 @@ function updateRowData($row, pk, dataObject) {
             var elem = elemArr[0];
             switch (elem.nodeName) {
                 case 'INPUT':
-                    $(elem).attr('value', dataObject[column]);
-                    break;
-                case 'TEXTAREA':
-                    $(elem).text(dataObject[column]);
-                    break;
-                case 'SELECT':
-                    $(elem).find('option[value="' + dataObject[column] +'"]').attr('selected', true);
+                    //$(elem).attr('value', dataObject[column]);
                     //$(elem).val(dataObject[column]);
+                    //break;
+                case 'TEXTAREA':
+                    //$(elem).text(dataObject[column]);
+                    //$(elem).val(dataObject[column]);
+                    //break;
+                case 'SELECT':
+                    //$(elem).find('option[value="' + dataObject[column] +'"]').attr('selected', true);
+                    $(elem).val(dataObject[column]);                    
                     break;
                 default:
             }
         }
     }
+    //update change for select2
+    $row.find('td.dd-row-select2 select').trigger('change');
 }
 function deleteRow(btn, pk, actionUrl) {
     if (!confirm("Are you sure you want to delete this row?")) {
@@ -139,6 +153,8 @@ function deleteRow(btn, pk, actionUrl) {
             var result = response.result;
             if (!response.errors) {//delete success
                 $row.remove();
+            } else {
+                alert('Delete failed');
             }
         },
     });
@@ -169,9 +185,9 @@ function cloneRow($row, pk, isCopy) {
     var rowHtml = $row.html();
     var oldIndex = '\\[' + oldIndexNo + '\\]';//replace Model[rowIndex][attribute]
     rowHtml = rowHtml.replaceAll(oldIndex, '['+len+']');
-    rowHtml = '<tr data-key="0" id="it-row-' + len +'">' + rowHtml + '</tr>';
+    rowHtml = '<tr data-key="0" id="dd-row-' + len +'">' + rowHtml + '</tr>';
     $(tbody).append(rowHtml);
-    $newRow = $('#it-row-' + len);
+    $newRow = $('#dd-row-' + len);
     if (isCopy) {
         $newRow.find('.value-' + pk).val('');
     } else {
@@ -179,11 +195,11 @@ function cloneRow($row, pk, isCopy) {
         $newRow.find('option[selected]').removeAttr('selected');
         $newRow.find('textarea').text('');
     }
-    //check if first column is serial - update
-    $firstColumn = $newRow.find('td:first');
-    if ($firstColumn.children().length == 0) {
-        $firstColumn.html(len + 1);
-    }
+    //update serial column
+    $newRow.find('.dd-serial').html(len + 1);
+    //clear data column
+    $newRow.find('.dd-data').html('');
+    
     toggleButtons($newRow, true);
     enableNewSelect2($newRow);
     enableInputs($newRow);

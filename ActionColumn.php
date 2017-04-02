@@ -7,6 +7,7 @@ use yii\helpers\Html;
 
 class ActionColumn extends KartikActionColumn {
 
+    public $cssClass = 'dd-action';
     public $actionSaveRow = './save-row';
     public $actionReloadRow = './reload-row';
     public $actionDeleteRow = './delete-row';
@@ -61,6 +62,23 @@ class ActionColumn extends KartikActionColumn {
             $js = "$(function() {disableInputs($('.kv-grid-table'));});";
             $view->registerJs($js);
         }
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function renderDataCell($model, $key, $index)
+    {
+        $options = $this->fetchContentOptions($model, $key, $index);
+        
+        //add class identity class
+        if (!array_key_exists('class', $options)) {
+            $options['class'] = $this->cssClass;
+        } else {
+            $options['class'] .= " $this->cssClass";
+        }
+        
+        return Html::tag('td', $this->renderDataCellContent($model, $key, $index), $options);
     }
 
 }

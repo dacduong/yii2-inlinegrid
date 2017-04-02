@@ -10,9 +10,9 @@ use yii\helpers\Html;
 class Select2Column extends TextInputColumn
 {
     
-    public $name = 'itselect2';
+    public $name = 'ddselect2';
     
-    public $cssClass = 'it-row-select2';
+    public $cssClass = 'dd-row-select2';
     
     public $pageSummaryFunc = GridView::F_COUNT;
     

@@ -8,9 +8,9 @@ use yii\helpers\Html;
 class TextareaColumn extends TextInputColumn
 {
     
-    public $name = 'ittextarea';
+    public $name = 'ddtextarea';
     
-    public $cssClass = 'it-row-textarea';
+    public $cssClass = 'dd-row-textarea';
     
     public $pageSummaryFunc = GridView::F_COUNT;
 

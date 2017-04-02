@@ -8,9 +8,9 @@ use yii\helpers\Html;
 class DropdownlistColumn extends TextInputColumn
 {
     
-    public $name = 'itdropdownlist';
+    public $name = 'dddropdownlist';
     
-    public $cssClass = 'it-row-dropdownlist';
+    public $cssClass = 'dd-row-dropdownlist';
     
     public $pageSummaryFunc = GridView::F_COUNT;
     
