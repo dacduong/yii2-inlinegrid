@@ -35,6 +35,12 @@ Sample code from yii2-teamhelper module
 
 View:
 ```
+$textInputControlOptions = [
+    'class' => 'text-right',
+    'maxlength' => 4,
+    'size' => 8,
+    'defaultValue' => 0,
+];
 $gridColumns = [
     [
         'class' => SerialColumn::className(),
