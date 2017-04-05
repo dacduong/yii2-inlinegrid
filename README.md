@@ -228,3 +228,4 @@ Controller:
         return [];
     }
 ```
+More sample code is available in [yii2-teamhelper repo](https://github.com/dacduong/yii2-teamhelper)  
